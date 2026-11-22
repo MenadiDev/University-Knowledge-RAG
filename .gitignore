@@ -1,0 +1,24 @@
+# Google Calendar credentials
+credentials.json
+token.json
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+rag_env/
+.venv/
+venv/
+
+# Environment variables
+.env
+.env.*
+
+# ChromaDB
+chroma_db/
+chroma/
+
+# IDE
+.vscode/
+.idea/

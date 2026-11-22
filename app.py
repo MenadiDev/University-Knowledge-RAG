@@ -1,7 +1,7 @@
 
 import streamlit as st
 import tempfile
-import uuid
+import hashlib
 from pathlib import Path
 
 from langchain_community.document_loaders import PyMuPDFLoader
@@ -196,10 +196,10 @@ def initialize_rag():
     )
 
     vector_store = Chroma(
-        collection_name="university_docs",
-        persist_directory="chroma_db",
-        embedding_function=embeddings
-    )
+    collection_name="university_docs_clean",
+    persist_directory="chroma_db",
+    embedding_function=embeddings
+   )
 
     llm = ChatOllama(
         model="llama3.2:3b",
@@ -222,7 +222,8 @@ uploaded_files = st.sidebar.file_uploader(
 )
 
 
-# 4. Process uploaded PDFs
+# 4. Process uploaded PDFs with duplicate prevention
+
 if st.sidebar.button("Process Documents"):
 
     if uploaded_files:
@@ -233,16 +234,28 @@ if st.sidebar.button("Process Documents"):
 
             for uploaded_file in uploaded_files:
 
+                # Read PDF content
+                pdf_bytes = uploaded_file.getvalue()
+
+                # Generate a unique fingerprint for the PDF content
+                file_hash = hashlib.sha256(
+                    pdf_bytes
+                ).hexdigest()
+
                 with tempfile.TemporaryDirectory() as temp_dir:
 
                     pdf_path = Path(temp_dir) / uploaded_file.name
-                    pdf_path.write_bytes(uploaded_file.getvalue())
+                    pdf_path.write_bytes(pdf_bytes)
 
+                    # Load PDF
                     loader = PyMuPDFLoader(str(pdf_path))
                     pdf_documents = loader.load()
 
+                    # Add consistent metadata
                     for doc in pdf_documents:
+
                         doc.metadata["source"] = uploaded_file.name
+                        doc.metadata["file_hash"] = file_hash
 
                     all_documents.extend(pdf_documents)
 
@@ -254,11 +267,31 @@ if st.sidebar.button("Process Documents"):
 
             chunks = text_splitter.split_documents(all_documents)
 
-            # Generate embeddings and store in ChromaDB
-            ids = [str(uuid.uuid4()) for _ in chunks]
+            # Remove identical chunks within this upload batch
+            unique_chunks = {}
+
+            for chunk in chunks:
+
+                chunk_hash = hashlib.sha256(
+                    chunk.page_content.encode("utf-8")
+                ).hexdigest()
+
+                file_hash = chunk.metadata["file_hash"]
+                page = chunk.metadata.get("page", 0)
+
+                # Stable ID for each document chunk
+                chunk_id = hashlib.sha256(
+                    f"{file_hash}_{page}_{chunk_hash}".encode("utf-8")
+                ).hexdigest()
+
+                unique_chunks[chunk_id] = chunk
+
+            # Store using deterministic IDs
+            ids = list(unique_chunks.keys())
+            documents = list(unique_chunks.values())
 
             vector_store.add_documents(
-                documents=chunks,
+                documents=documents,
                 ids=ids
             )
 
@@ -266,12 +299,18 @@ if st.sidebar.button("Process Documents"):
             f"Successfully processed {len(uploaded_files)} PDF(s)!"
         )
 
-        st.sidebar.write(f"Total chunks added: {len(chunks)}")
+        st.sidebar.write(
+            f"Total chunks extracted: {len(chunks)}"
+        )
+
+        st.sidebar.write(
+            f"Unique chunks stored: {len(documents)}"
+        )
 
     else:
+
         st.sidebar.warning("Please upload at least one PDF.")
-
-
+        
 # 5. Chat history
 if "messages" not in st.session_state:
     st.session_state.messages = []
