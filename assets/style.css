@@ -1,0 +1,157 @@
+/* Main application */
+.stApp {
+    background-color: #FFFAFD;
+    color: #49364D;
+}
+
+/* Main content area */
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: 1200px;
+}
+
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background-color: #F9EFF6;
+    border-right: 1px solid #F0DFEA;
+}
+
+/* Main headings */
+h1, h2, h3 {
+    color: #49364D;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Paragraphs */
+p, label {
+    color: #705E73;
+}
+
+/* Buttons */
+.stButton > button {
+    background-color: #EBD9EC;
+    color: #65466C;
+    border: 1px solid #E2CBE2;
+    border-radius: 12px;
+    padding: 0.55rem 1rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.stButton > button:hover {
+    background-color: #DFC4E0;
+    border-color: #D4B4D7;
+    color: #49364D;
+}
+
+/* File uploader */
+[data-testid="stFileUploader"] {
+    background-color: #FFFFFF;
+    border: 1px dashed #D9B9D5;
+    border-radius: 14px;
+    padding: 12px;
+}
+
+/* Chat input */
+[data-testid="stChatInput"] {
+    background-color: #FFFFFF;
+    border: 1px solid #EBD9EC;
+    border-radius: 16px;
+}
+
+/* Chat messages */
+[data-testid="stChatMessage"] {
+    background-color: #FFFFFF;
+    border: 1px solid #F0E5EF;
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+/* Expanders */
+[data-testid="stExpander"] {
+    background-color: #FFFFFF;
+    border: 1px solid #F0DFEA;
+    border-radius: 14px;
+}
+
+/* Success messages */
+[data-testid="stAlert"] {
+    border-radius: 12px;
+}
+/* Sidebar headings */
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+    color: #49364D !important;
+}
+
+/* Sidebar text */
+[data-testid="stSidebar"] label,
+[data-testid="stSidebar"] p,
+[data-testid="stSidebar"] span {
+    color: #705E73;
+}
+
+/* PDF uploader */
+[data-testid="stFileUploader"] section {
+    background-color: #FFFFFF !important;
+    border: 1px dashed #D9B9D5 !important;
+    border-radius: 12px;
+}
+
+[data-testid="stFileUploader"] section button {
+    background-color: #EBD9EC !important;
+    color: #65466C !important;
+    border: 1px solid #E2CBE2 !important;
+}
+
+/* Chat input */
+[data-testid="stChatInput"] {
+    background-color: #FFFFFF !important;
+    border: 1px solid #EBD9EC !important;
+    border-radius: 16px !important;
+}
+
+[data-testid="stChatInput"] textarea {
+    color: #49364D !important;
+    background-color: #FFFFFF !important;
+}
+
+/* Main toolbar */
+[data-testid="stToolbar"] {
+    background-color: #FFFAFD !important;
+}
+
+/* Bottom chat area */
+[data-testid="stBottom"] {
+    background-color: #FFFAFD !important;
+}
+
+/* Remove the dark bottom background */
+[data-testid="stBottom"],
+[data-testid="stBottom"] > div {
+    background-color: #FFFAFD !important;
+}
+
+/* Chat input outer container */
+[data-testid="stChatInput"] {
+    background-color: #FFFFFF !important;
+    border: 1px solid #EBD9EC !important;
+    border-radius: 16px !important;
+    box-shadow: 0 2px 8px rgba(100, 70, 108, 0.06);
+}
+
+/* Actual text input area */
+[data-testid="stChatInput"] textarea {
+    background-color: #FFFFFF !important;
+    color: #49364D !important;
+    caret-color: #49364D !important;
+}
+
+/* Placeholder text */
+[data-testid="stChatInput"] textarea::placeholder {
+    color: #A18BA5 !important;
+    opacity: 1 !important;
+}

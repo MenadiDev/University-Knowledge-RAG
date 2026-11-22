@@ -1,0 +1,20 @@
+# Generated vector database (rebuild with: python ingest.py)
+chroma_db/
+
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Secrets / local settings
+.env
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
